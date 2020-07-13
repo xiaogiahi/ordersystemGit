@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="components/layout"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div layout:fragment="nav">
+    <div th:include="components/nav :: nav(tab='commodity')"></div>
+</div>
+
+<div layout:fragment="content" >
+
+    <div ng-app="myApp" ng-controller="savePage" >
+
+        <table class="content">
+            <thead>
+            <tr>
+                <th>name</th>
+                <th>type</th>
+                <th>price</th>
+                <th>quantity</th>
+                <th>operation</th>
+            </tr>
+            </thead>
+            <tbody >
+            <tr ng-repeat="commodity in commodities">
+                <td>
+                    <input type="text" ng-model="commodity.name" required="required"/>
+                </td>
+                <td >
+                    <input type="text" ng-model="commodity.type"  required="required"/>
+                </td>
+                <td >
+                    <input type="number" ng-model="commodity.price"  required="required"/>
+                </td>
+                <td >
+                    <input type="number" ng-model="commodity.quantity"  required="required"/>
+                </td>
+                <td>
+                    <a href="#" ng-click="addOneItem($index,commodity)">add</a>
+                    <a href="#" ng-click="deleteOneItem()">delete</a>
+                </td>
+<!--                <div ng-messages="commodity.name.$error" ng-if="commodity.name.$dirty">-->
+<!--                    <div ng-message="required">必填项</div>-->
+<!--                </div>-->
+
+            </tr>
+            <tr >
+                <td >
+                    <a href="/commodity" ng-click="saveCommodities()">save</a>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+
+</div>
+    <script th:src="@{~/js/commodity.js}"></script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" style="text/css" th:href="@{~/css/systemstyle.css}"/>
+</head>
+<body>
+
+<div th:fragment="nav (tab)">
+    <ul class="nav">
+        <li>
+            <a th:class="${tab eq 'commodity'} ? active" th:href="@{/commodity}">commodity</a>
+        </li>
+        <li>
+            <a th:class="${tab eq 'order'} ? active" th:href="@{/totalorder}">order</a>
+        </li>
+        <li>
+            <a th:class="${tab eq 'orderdetail'} ? active" th:href="@{/totalorder/save}">save order</a>
+        </li>
+</ul>
+</div>
+
+</body>
+</html>

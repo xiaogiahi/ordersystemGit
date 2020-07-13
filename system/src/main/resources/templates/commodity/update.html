@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="components/layout"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div layout:fragment="nav">
+    <div th:include="components/nav :: nav(tab='commodity')"></div>
+</div>
+
+<div layout:fragment="content" >
+    <script th:inline="javascript">
+        var commodity = [[${commodity}]];
+        console.log(commodity.id);
+        </script>
+    <div ng-app="myApp" ng-controller="updatePage"  >
+        <form action="#" th:action="@{/commodity}" th:object="${commodity}" method="post">
+            <input type="hidden" name="_method" value="put"/>
+            <input type="hidden"  th:field="*{id}"/>
+            <p>name: <input type="text" d="name" name="name" th:field="*{name}"/> </p>
+            <p>type: <input type="text" id="type" name="type" th:field="*{type}"/> </p>
+            <p>price: <input type="text" id="price" name="price" th:field="*{price}"/> </p>
+            <p>quantity: <input type="text" id="quantity" name="quantity" th:field="*{quantity}"/> </p>
+            <p><button type="submit">submit</button></p>
+        </form>
+</div>
+    <script th:src="@{~/js/commodity.js}"></script>
+    </div>
+</body>
+</html>

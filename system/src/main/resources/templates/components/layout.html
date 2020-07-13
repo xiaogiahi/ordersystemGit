@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+   <meta charset="UTF-8" />
+   <link rel="stylesheet" style="text/css" th:href="@{~/css/systemstyle.css}"/>
+</head>
+<body>
+<header>
+   <div class="headerBox">
+         <div class="topLogo">
+            <a href="#"><img th:src="@{~/pic/address.png}" /></a>
+         </div>
+         <div class="title">
+            <h3>Title</h3>
+         </div>
+   </div>
+</header>
+<div class="locationLine" >
+   当前位置：首页 &gt; <em>页面</em>
+</div>
+<table class="globalMainBox" >
+   <tr>
+      <td class="columnLeftBox" style="border:solid;" valign="top">
+          <div layout:fragment="nav"></div>
+      </td>
+      <td class="whiteSpace" style="border:solid;" valign="top">
+         <div layout:fragment="content"></div>
+      </td>
+   </tr>
+
+</table>
+
+
+
+</body>
+</html>

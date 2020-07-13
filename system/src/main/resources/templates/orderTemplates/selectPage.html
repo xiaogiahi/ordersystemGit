@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="components/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"/>
+</head>
+<body>
+<div layout:fragment="nav">
+    <div th:include="components/nav :: nav(tab='orderDetail')"></div>
+</div>
+
+<div layout:fragment="content" >
+    <script th:inline="javascript">
+        var result = [[${ordersPage}]];
+        console.log(result);
+    </script>
+    <div ng-app="myApp" ng-controller="orderPage">
+        <ul class="page">
+            <li>
+                customerName:<input type="text" id="name" name="name" ng-model="orderCondition.customerName"/>
+            </li>
+            <li>
+                startDate:<input type="text" id="startDate" name="startDate" ng-model="orderCondition.startDate"/>
+            </li>
+            <li>
+                endDate:<input type="text" id="endDate" name="endDate" ng-model="orderCondition.endDate"/>
+            </li>
+            <li>
+                <button ng-click="findPage(1)">search</button>
+            </li>
+        </ul>
+    <table class="content">
+        <thead>
+            <tr>
+                <th>customerName</th>
+                <th>address</th>
+                <th>date</th>
+                <th>totalPrice</th>
+                <th>operation</th>
+                <th>detail</th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr ng-repeat="order in content">
+                <td>
+                    <input type="text" ng-model="order.orderInfo.customerName" />
+                </td>
+                <td >
+                    <input type="text" ng-model="order.orderInfo.address"  />
+                </td>
+                <td >
+                    <input type="text" ng-model="order.orderInfo.date"  />
+                </td>
+                <td >
+                    <input type="text" ng-model="order.orderInfo.totalPrice"  />
+                </td>
+                <td ng-if="order.orderDetails">
+                    <table class="detail">
+                        <thead>
+                        <th>name</th>
+                        <th>type</th>
+                        <th>price</th>
+                        <th>quantity</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="orderDetail in order.orderDetails">
+                            <td>
+                                <input type="text" ng-model="orderDetail.commodityMapper.name"></input>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="orderDetail.commodityMapper.type"></input>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="orderDetail.price"></input>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="orderDetail.quantity"></input>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <a href="#" ng-click="updateOrder(order.orderInfo.id)">update</a>
+                    <a href="#" ng-click="deleteOrder(order)">delete</a>
+                </td>
+
+            </tr>
+
+
+
+
+
+
+
+<!--        <div class="hiddenBlock" id="detailList">-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                    <span >name</span>-->
+<!--                    <span >price</span>-->
+<!--                    <span >quantity</span>-->
+<!--                    <span >total</span>-->
+<!--                </thead>-->
+<!--                        <tbody>-->
+<!--    <tr ng-repeat="orderDetail in order.orderDetails">-->
+<!--                    <td type="text" ng-model="orderDetail.commodity.name"/>-->
+<!--                    <td ng-model="orderDetail.price"></td>-->
+<!--                    <td ng-model="orderDetail.quantity"></td>-->
+<!--                    <td>{{orderDetail.price*orderDetail.quantity}}</td>-->
+
+<!--            </tr>-->
+<!--    </tbody>-->
+<!--            </table>-->
+
+
+<!--        </div>-->
+
+        </tbody>
+    </table>
+    <div class="page" valign="bottom">
+
+        <ul class="page" >
+            <li ng-repeat="i in pageSequence">
+                <a href="#" ng-click="findPage(i)"  >{{i}}</a>
+            </li>
+        </ul>
+
+    </div>
+</div>
+    <script th:src="@{~/js/js4order.js}" type="text/javascript"></script>
+</div>
+</body>
+</html>

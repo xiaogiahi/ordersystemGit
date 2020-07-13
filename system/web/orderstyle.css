@@ -1,0 +1,39 @@
+ol li{
+    display:block;
+    width:100%;
+    clear:both;
+    margin:10px;
+    height: 38px;
+    font-size: 26px;
+
+}
+
+li div{
+    display:block;
+    float:left;
+    width:20%;
+}
+
+    .dropdown{
+       position:relative;
+       display:inline-block;
+    }
+    .dropdown-content{
+        display:none;
+    }
+    .dropdown:hover .dropdown-content{
+        display:block;
+    }
+    .dropdown-content:hover {
+        background-color:grey;
+        color:white;
+    }
+
+    .dropdown input, .dropdown span{
+        background-color:#f1f1f1;
+        border:0;
+        height:30pt;
+        width:80%;
+        font-size: 26px;
+        text-align:bottom;
+    }

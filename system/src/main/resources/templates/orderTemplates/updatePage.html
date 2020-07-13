@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="components/layout"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div layout:fragment="nav">
+    <div th:include="components/nav :: nav(tab='commodity')"></div>
+</div>
+
+<div layout:fragment="content" >
+    <script th:inline="javascript">
+        var order = [[${order}]];
+        console.log(order);
+        </script>
+    <script th:src="@{~/js/js4order.js}"></script>
+    <div ng-app="myApp" ng-controller="updatePage"  >
+        <table>
+            <thead>
+            <th>customerName</th>
+            <th>address</th>
+            <th>date</th>
+            <th>totalPrice</th>
+            <th>detail</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <input type="text" ng-model="order.orderInfo.customerName" />
+                </td>
+                <td >
+                    <input type="text" ng-model="order.orderInfo.address"  />
+                </td>
+                <td >
+                    <input type="text" ng-model="order.orderInfo.date"  />
+                </td>
+                <td >
+                    <input type="text" ng-model="order.orderInfo.totalPrice" />
+                    <button ng-click="computeTotal()">计算总价</button>
+                </td>
+                <td ng-if="order.orderDetails">
+                    <table class="detail">
+                        <thead>
+                        <th>name</th>
+                        <th>type</th>
+                        <th>price</th>
+                        <th>quantity</th>
+                        <th>total</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="orderDetail in order.orderDetails">
+                            <td>
+                                <select style="margin:0;overflow:hidden; position:absolute;width:11%;height:30px;" ng-options="commodity.name for commodity in commodities"
+                                        ng-model="orderDetail.commodityMapper" ng-change="setDefault(orderDetail,orderDetail.commodityMapper)">
+
+                                </select>
+
+                                <input style="margin:0;position:absolute;width:10%;height:30px;" type="text" ng-model="orderDetail.commodityMapper.name"/>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="orderDetail.commodityMapper.type"></input>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="orderDetail.price"></input>
+                            </td>
+                            <td>
+                                <input type="text" ng-model="orderDetail.quantity"></input>
+                            </td>
+                            <td>
+                               <span>{{orderDetail.price*orderDetail.quantity}}</span>
+                            </td>
+                            <td>
+
+                                <a href="#" ng-click="addOneItem($index,orderDetail)">add</a>
+                                <a href="#" ng-click="deleteOneItem()">delete</a>
+                                <button ng-click="commodityDetail(orderDetail.commodityMapper)">查询商品详情</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#"  ng-click="saveUpdate()">update</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</body>
+</html>

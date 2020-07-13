@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="testLayout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>TEST2</title>
+</head>
+<body>
+    <div layout:fragment="nav">
+        <div th:include="components/nav :: nav(tab='commodity')"></div>
+    </div>
+
+    <div layout:fragment="content">
+        hello
+    </div>
+</body>
+</html>

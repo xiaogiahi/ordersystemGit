@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="components/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"/>
+</head>
+<body>
+<div layout:fragment="nav">
+    <div th:include="components/nav :: nav(tab='commodity')"></div>
+</div>
+
+<div layout:fragment="content" >
+    <script th:inline="javascript">
+        var result = [[${commoditiesPage}]];
+        console.log(result);
+    </script>
+    <div ng-app="myApp" ng-controller="selectPage">
+        <ul class="page">
+            <li>
+                name:<input type="text" id="name" name="name" ng-model="commodityCondition.name"/>
+            </li>
+            <li>
+                type:<input type="text" id="type" name="type" ng-model="commodityCondition.type"/>
+            </li>
+            <li>
+                <button ng-click="findPage(1)">search</button>
+            </li>
+        </ul>
+    <table class="content">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>type</th>
+                <th>price</th>
+                <th>quantity</th>
+                <th>operation</th>
+            </tr>
+        </thead>
+        <tbody >
+        <tr ng-repeat="commodity in content">
+                <td>
+                    <input type="text" ng-model="commodity.name" />
+                </td>
+                <td >
+                    <input type="text" ng-model="commodity.type"  />
+                </td>
+                <td >
+                    <input type="text" ng-model="commodity.price"  />
+                </td>
+                <td >
+                    <input type="text" ng-model="commodity.quantity"  />
+                </td>
+                <td>
+                    <a href="#" ng-click="updateCommodity(commodity.id)">update</a>
+                    <a href="#" ng-click="deleteCommodity(commodity.id)">delete</a>
+                </td>
+                <td>
+<!--                    <form action="#" th:action="@{'/commodity/'+${commodity.id}}" method="post">-->
+<!--                        <input type="hidden" name="_method" value="delete"/>-->
+<!--                        <button type="submit">delete</button>-->
+<!--                    </form>-->
+                </td>
+        </tr>
+        <tr >
+            <td >
+                <a href="/commodity/save">add a new one</a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="page" valign="bottom">
+
+        <ul class="page" >
+            <li ng-repeat="i in pageSequence">
+                <a href="#" ng-click="findPage(i)"  >{{i}}</a>
+            </li>
+        </ul>
+
+    </div>
+</div>
+
+
+    <script th:src="@{~/js/js4commodity.js}" type="text/javascript"></script>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+
+	<link rel="stylesheet" style="text/css" href="orderstyle.css">
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl"  >
+
+	<h3>{{clock}}</h3>
+    <ol>
+		<li ng-repeat="x in orders">
+
+			<div class="dropdown">
+				<input  type='text' ng-model="x.name">
+				<span ng-repeat="i in items" class="dropdown-content"  >{{i}}</span>
+			</div>
+			<div class="dropdown">
+				<input  type='text' ng-model="x.type">
+				<span ng-repeat="t in getType()" class="dropdown-content" >{{t}}</span>
+			</div>
+			<div class="dropdown">
+				<input type='number' ng-model="x.quantity">
+			</div>
+            <div class="dropdown">
+				<input type='number' ng-model="x.price">
+			</div>
+            <div>
+				<span>{{x.quantity*x.price}}</span>
+			</div>
+            <div style="width:10%">
+				<button ng-click='addOneItem($index)'>添加</button>
+			</div>
+            <div style="width:10%;">
+				<button ng-click='deleteOneItem($index)'>删除</button>
+			</div>
+		</li>
+	</ol>
+    <ol>
+
+	</ol>
+
+</div>
+
+<script src="js/commodity.js">
+
+</script>
+
+
+
+</body>
+</html>

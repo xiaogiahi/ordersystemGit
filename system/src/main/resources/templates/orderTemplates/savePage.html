@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorator="components/layout"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<div layout:fragment="nav">
+    <div th:include="components/nav :: nav(tab='orderdetail')"></div>
+</div>
+
+<div layout:fragment="content" >
+    <script th:inline="javascript">
+        var commodities = [[${commodities}]];
+        console.log(commodities);
+        </script>
+    <div ng-app="myApp" ng-controller="savePage" >
+        <div>
+            <ul class="page">
+                <li>
+                    customerName: <input type="text" ng-model="order.orderInfo.customerName"></input>
+                </li>
+                <li>
+                    address: <input type="text" ng-model="order.orderInfo.address"></input>
+                </li>
+                <li>
+                    date: <input type="text" ng-model="order.orderInfo.date"></input>
+                </li>
+            </ul>
+        </div>
+        <table class="content" >
+            <thead>
+            <tr>
+                <th>name</th>
+<!--                <th>type</th>-->
+                <th>quantity</th>
+                <th>price</th>
+                <th>total</th>
+                <th>operation</th>
+            </tr>
+            </thead>
+            <tbody >
+            <tr ng-repeat="orderDetail in order.orderDetails">
+
+                <td style="width:20%;height:80px;padding:0;">
+                    <select style="margin:0;overflow:hidden; position:absolute;width:11%;height:30px;" ng-options="commodity.name for commodity in commodities"
+                            ng-model="orderDetail.commodityMapper" ng-change="setDefault(orderDetail,orderDetail.commodityMapper)">
+
+                    </select>
+
+                    <input style="margin:0;position:absolute;width:10%;height:30px;" type="text" ng-model="orderDetail.commodityMapper.name"/>
+<!--                    <input type="text" ng-model="orderDetail.commodityMapper.name" required="required"/>-->
+                </td>
+<!--                <td >-->
+<!--                    <input type="text" ng-model="orderDetail.commodityMapper.type"  required="required"/>-->
+<!--                </td>-->
+                <td >
+                    <input type="number" ng-model="orderDetail.quantity"  required="required"/>
+                </td>
+                <td >
+                    <input type="number" ng-model="orderDetail.price"   required="required"/>
+                </td>
+               <td>
+                   <span>{{orderDetail.quantity*orderDetail.price}}</span>
+               </td>
+                <td>
+                    <a href="#" ng-click="addOneItem($index,orderDetail)">add</a>
+                    <a href="#" ng-click="deleteOneItem()">delete</a>
+                    <button ng-click="commodityDetail(orderDetail.commodityMapper)">查询商品详情</button>
+                </td>
+<!--                <div ng-messages="commodity.name.$error" ng-if="commodity.name.$dirty">-->
+<!--                    <div ng-message="required">必填项</div>-->
+<!--                </div>-->
+
+            </tr>
+            <tr>
+<!--                <input type="hidden">{{computeTotal()}}</input>-->
+                <button ng-click="computeTotal()">计算总价</button>
+                totalPrice: <input type="text" ng-model="order.orderInfo.totalPrice"/>
+            </tr>
+
+            </tbody>
+</table>
+        <div>
+
+            <a href="#" ng-click="saveOrder()">save</a>
+        </div>
+
+    </div>
+    <script th:src="@{~/js/js4order.js}"></script>
+    </div>
+</body>
+</html>

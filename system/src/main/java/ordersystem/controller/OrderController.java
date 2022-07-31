@@ -1,5 +1,6 @@
 package ordersystem.controller;
 
+import ordersystem.mapper.CommodityMapper;
 import ordersystem.mapper.Order;
 import ordersystem.mapper.OrderDetailMapper;
 import ordersystem.mapper.OrderInfoMapper;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("totalorder")
 public class OrderController {
     @Autowired
@@ -24,27 +25,22 @@ public class OrderController {
     @Autowired
     CommodityService commodityService;
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
     Order save(@RequestBody Order order){
         return orderService.save(order);
     }
     @RequestMapping("/info")
-    @ResponseBody
     List<OrderDetailMapper> findDetailByInfo(@RequestParam OrderInfoMapper orderInfoMapper){
         return orderService.findDetailByInfo(orderInfoMapper);
     }
     @RequestMapping
-    String findAll(Model model){
-        model.addAttribute("ordersPage",orderService.findAll());
-        return "orderTemplates/selectPage";
+    Page<Order> findAll(){
+        return orderService.findAll();
     }
     @RequestMapping("save")
-    String savePage(Model model){
-        model.addAttribute("commodities",commodityService.findAll());
-        return "orderTemplates/savePage";
+    List<CommodityMapper> savePage(){
+        return commodityService.findAll();
     }
     @RequestMapping("index")
-    @ResponseBody
     Page<Order> find(@RequestParam(required = false) Integer currentPage,
                      @RequestParam(required = false) String customerName,
                      @RequestParam(required = false) String address,
@@ -56,21 +52,12 @@ public class OrderController {
 
     }
     @RequestMapping(method = RequestMethod.PUT)
-    @ResponseBody
     Order update(@RequestBody Order order){
         return orderService.update(order);
     }
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    void delete(Model model, @PathVariable Long id){
-        Page<Order> orders = orderService.delete(id);
-        model.addAttribute("response",orders);
+    Page<Order> delete(@PathVariable Long id){
+        return orderService.delete(id);
     }
-
-    @RequestMapping(value = "/{id}")
-    String  updatePage(Model model,@PathVariable Long id){
-        model.addAttribute("order",orderService.findOne(id));
-        return "orderTemplates/updatePage";
-    }
-
 
 }

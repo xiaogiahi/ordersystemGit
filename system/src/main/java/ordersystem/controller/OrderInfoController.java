@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/orderinfo")
 public class OrderInfoController {
     @Autowired
     OrderInfoService orderInfoService;
     @RequestMapping
-    @ResponseBody
     Page<OrderInfoMapper> findAll(
             @RequestParam(required = false) String customerName,
             @RequestParam(required = false) String address,
@@ -31,22 +30,18 @@ public class OrderInfoController {
         return orderInfoService.findAll(customerName,address,startDate,endDate,signal,totalPrice,currentPage);
     }
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
     OrderInfoMapper save(@RequestBody OrderInfoMapper orderInfoMapper){
         return orderInfoService.save(orderInfoMapper);
     }
     @RequestMapping("/init")
-    @ResponseBody
     void init(){
        orderInfoService.init();
     }
     @RequestMapping(method = RequestMethod.PUT)
-    @ResponseBody
     OrderInfoMapper put(@RequestBody OrderInfoMapper orderInfoMapper){
         return orderInfoService.put(orderInfoMapper);
     }
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    @ResponseBody
     void delete(@PathVariable long id){
         orderInfoService.delete(id);
     }

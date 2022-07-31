@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Controller
+@RestController
 @RequestMapping("commodity")
 public class CommodityController {
     @Autowired
     CommodityService commodityService;
 
     @RequestMapping("/init")
-    String init(){
+    List<CommodityMapper> init(){
         commodityService.deleteAll();
-        List<CommodityMapper> initCommodities = new ArrayList<CommodityMapper>();
+        List<CommodityMapper> initCommodities = new ArrayList<>();
         for (int i=0;i<10;i++){
             CommodityMapper commodityMapper = new CommodityMapper();
             commodityMapper.setName("G"+i);
@@ -30,18 +30,11 @@ public class CommodityController {
             commodityMapper.setQuantity(10+i);
             initCommodities.add(commodityMapper);
         }
-        commodityService.save(initCommodities);
-        return "redirect:/commodity/index";
-    }
-    @RequestMapping()
-    String indexPage(Model model){
-        model.addAttribute("commoditiesPage",commodityService.findAll(null,null));
-        return "commodity/selectPage";
+        return commodityService.save(initCommodities);
     }
 
     @RequestMapping("/index")
-    @ResponseBody
-    Page<CommodityMapper>  findPage(Model model,
+    Page<CommodityMapper>  findPage(
             @RequestParam(value = "currentPage",required = false) Integer currentPage,
                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                      @RequestParam(value = "name",required = false) String name,
@@ -49,50 +42,35 @@ public class CommodityController {
                      ){
 
         if("".equals(name)){
-            Page<CommodityMapper> commodityMappers = commodityService.findAll(currentPage,pageSize);
-            model.addAttribute("commoditiesPage",commodityMappers);
-            return commodityMappers;
+            return commodityService.findAll(currentPage,pageSize);
         }
         else if("".equals(type)){
-            Page<CommodityMapper> commodityMappers = commodityService.findByName(name,currentPage,pageSize);
-            model.addAttribute("commoditiesPage",commodityMappers);
-            return commodityMappers;
+            return commodityService.findByName(name,currentPage,pageSize);
         }
         else {
-            Page<CommodityMapper> commodityMappers = commodityService.findByNameAndType(name,type,currentPage,pageSize);
-            model.addAttribute("commoditiesPage",commodityMappers);
-            return commodityMappers;
+            return commodityService.findByNameAndType(name,type,currentPage,pageSize);
         }
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    String saveCommodity(@RequestBody ArrayList<CommodityMapper> commodityMappers){
-        commodityService.save(commodityMappers);
-        return "redirect:/commodity";
+    List<CommodityMapper> saveCommodity(@RequestBody ArrayList<CommodityMapper> commodityMappers){
+        return commodityService.save(commodityMappers);
     }
     @RequestMapping("/{id}")
-    String update(Model model, @PathVariable long id){
-        CommodityMapper commodityMapper = commodityService.findOne(id);
-        model.addAttribute("commodity", commodityMapper);
-        return "commodity/update";
+    CommodityMapper update(Model model, @PathVariable long id){
+        return commodityService.findOne(id);
     }
 
     @RequestMapping (method = RequestMethod.PUT)
-    String updateCommodity(@ModelAttribute CommodityMapper commodity){
-        commodityService.update(commodity);
-        return "redirect:/commodity";
+    CommodityMapper updateCommodity(@ModelAttribute CommodityMapper commodity){
+        return commodityService.update(commodity);
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    @ResponseBody
     Page<CommodityMapper> deleteCommodity(
             @PathVariable long id){
         CommodityMapper commodityMapper = commodityService.findOne(id);
         commodityService.delete(commodityMapper);
         return commodityService.findAll(null,null);
-    }
-    @RequestMapping("/save")
-    String save(){
-        return "commodity/save";
     }
 }

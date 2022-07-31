@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("orderdetail")
 public class OrderDetailController {
     @Autowired
     OrderDetailService orderDetailService;
     @RequestMapping
-    @ResponseBody
     List<OrderDetailMapper> findAll(@RequestParam(required = false)CommodityMapper commodityMapper,
                                     @RequestParam(required = false)OrderInfoMapper orderInfoMapper,
                                     @RequestParam(required = false)Signal priceSignal,
@@ -32,17 +31,14 @@ public class OrderDetailController {
                 quantity);
     }
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    @ResponseBody
     void delete(long id){
         orderDetailService.delete(id);
     }
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
     OrderDetailMapper save(@RequestBody OrderDetailMapper orderDetailMapper){
         return null;
     }
     @RequestMapping(method = RequestMethod.PUT)
-    @ResponseBody
     OrderDetailMapper put(@RequestBody OrderDetailMapper orderDetailMapper){
         return orderDetailService.put(orderDetailMapper);
     }
